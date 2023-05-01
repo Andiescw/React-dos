@@ -1,56 +1,38 @@
-
-
-import { useState } from 'react'
-
-// estilos
+import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
+//import { useState } from 'react'
 //import './App.css'
+
+// React Bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// NavBar
-import NavBar  from "./componentes/NavBar"
+//import { Form } from './componentes/Form/Form';
 
-// ItemListContainer
-//import ItemListContainer from './componentes/ItemListContainer/ItemListContainer';
-
-import Button from 'react-bootstrap/Button';
-import ItemListContainer from './componentes/ItemListContainer';
+import NavBar  from "./componentes/NavBar/NavBar"
+import ItemListContainer from './componentes/ItemListContainer/ItemListContainer';
+import { CartContainer } from './componentes/CartContainer/CartContainer';
+import { CartContextProvider } from './context/CartContext';
+import { ItemDetailContainer } from "./componentes/ItemDetailContainer/ItemDetailContainer";
+//import { ItemCount } from './componentes/ItemCount/ItemCount';
 
 
 function App() {
 
-  /*const myPromise = () => {
-    return new Promise((res, rej) => {
-      res([
-        { id: 1, name: "Item1", description: "Description1", stock: 4 },
-        { id: 2, name: "Item2", description: "Description2", stock: 2 },
-        { id: 3, name: "Item3", description: "Description3", stock: 5 },
-      ]);
-    });
-  };
-
-  setTimeout(() => {
-    myPromise()
-    .then(res => console.log(res))
-    .catch(err => console.log(err))
-  }, 3000); */
-
+  console.log('Renderizado de app')
   return (
-    <div className="App">
-      <NavBar />
-      <ItemListContainer greeting={'Te ayudo a impulsar tu negocio'}/>
-      
-      <div>
-        <h1> Hola, espero que esto si se muestre</h1>
+    <CartContextProvider>
+      <div className="App">
+        <BrowserRouter>
+        <NavBar />
+          <Routes>
+            <Route path='/' element= {<ItemListContainer />} />
+            <Route path='/cart' element= {<CartContainer />} /> 
+            <Route path='/item/:idItem' element={<ItemDetailContainer />} />
+            <Route path='/category/:idCategory' element={<ItemListContainer />} />
+            <Route path='*' element={ <Navigate to='/' /> } /> 
+          </Routes> 
+        </BrowserRouter>
       </div>
-
-      
-      <div className="mb-2">
-        <Button variant="primary" size="lg">
-          Like
-        </Button>{' '}
-      </div>
-
-    </div>
+    </CartContextProvider>
   )
 }
 
